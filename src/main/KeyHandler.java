@@ -48,7 +48,7 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-    public boolean isPressedAnyOf() {
+    public boolean isMoving() {
         return up || down || left || right;
     }
     public boolean isUp() {

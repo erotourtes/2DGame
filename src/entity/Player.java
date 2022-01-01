@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.SwapImg;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class Player extends Entity{
         this.key = key;
         setDefault();
         getImages();
+        swapImg();
     }
 
     public void setDefault() {
@@ -26,33 +28,29 @@ public class Player extends Entity{
         direction = Direction.DOWN;
     }
 
-    public void getImages() {
+    private void getImages() {
         try {
-            short numberOfImages = 3;
-            up = new BufferedImage[numberOfImages];
-            down = new BufferedImage[numberOfImages];
-            left = new BufferedImage[numberOfImages];
-            right = new BufferedImage[numberOfImages];
-            String path = "/resources/Player/Soldier/";
-
-            for (int i = 0; i < up.length; i++) {
-                up[i] = ImageIO.read(getClass().getResourceAsStream(path + "up/" + i + ".png"));
-                down[i] = ImageIO.read(getClass().getResourceAsStream(path + "down/" + i + ".png"));
-                left[i] = ImageIO.read(getClass().getResourceAsStream(path + "left/" + i + ".png"));
-                right[i] = ImageIO.read(getClass().getResourceAsStream(path + "right/" + i + ".png"));
-            }
+            String path = "/resources/Player/Soldier.png";
+            var image = ImageIO.read(getClass().getResourceAsStream(path));
+            var directions = Direction.values();
+            for (int y = 0; y < directions.length; y++)
+                for (int x = 0; x < numberOfImages; x++)
+                    images.get(directions[y])[x] = image.getSubimage(x * playerWidth, y * playerHeight, playerWidth, playerHeight);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void swapImg() {
+        for(var e : Direction.values())
+            new SwapImg(images.get(e), animatedImages.get(e));
+    }
+
     public void update() {
-        if (!key.isPressedAnyOf()) {
-            if (++spriteUpdatesHandler >= 15) {
-                spriteNumber = (short)((spriteNumber + 1) % 3);
-                spriteUpdatesHandler = 0;
-            }
-        }
+        if (key.isMoving())
+            state = State.MOVING;
+        else
+            state = State.WAITING;
 
         if (key.isUp()) {
             direction = Direction.UP;
@@ -73,13 +71,7 @@ public class Player extends Entity{
     }
 
     public void draw(Graphics2D g2D) {
-        BufferedImage image = null;
-        switch (direction) {
-            case UP -> image = up[spriteNumber];
-            case DOWN -> image = down[spriteNumber];
-            case LEFT -> image = left[spriteNumber];
-            case RIGHT -> image = right[spriteNumber];
-        }
+        BufferedImage image = animatedImages.get(direction).get(state);
         g2D.drawImage(image, x, y, playerWidth * GamePanel.scale, playerHeight * GamePanel.scale, null);
     }
 }

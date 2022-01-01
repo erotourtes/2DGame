@@ -20,10 +20,10 @@ public class GamePanel extends JPanel implements Runnable{
     private short fps = 60;
     private double nextRepaintTime;
 
-    private Thread gameThread;
+    private static Thread gameThread;
     private KeyHandler key = new KeyHandler();
 
-    private Player player = new Player(this, key);
+    private Player player ;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -31,6 +31,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(key);
         this.setFocusable(true);
+
+        player = new Player(this, key);
+
+        startGameThread();
     }
 
     public void startGameThread() {
@@ -77,6 +81,10 @@ public class GamePanel extends JPanel implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isGameThreadIsNull() {
+        return gameThread == null;
     }
 
     private double toMilliseconds(double time) {
