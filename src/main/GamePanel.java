@@ -1,5 +1,7 @@
 package main;
 
+import background.GenerateMap;
+import background.TileManager;
 import entity.Player;
 
 import javax.swing.*;
@@ -11,19 +13,21 @@ public class GamePanel extends JPanel implements Runnable{
 
     public final int tileSize = originalTileSize * scale;
 
-    private final int maxScreenColumn = 16;
-    private final int maxScreenRow = 12;
+    public final int maxScreenColumn = 16;
+    public final int maxScreenRow = 12;
 
     private final int screenWidth = tileSize * maxScreenColumn;
     private final int screenHeight = tileSize * maxScreenRow;
 
-    private short fps = 60;
+    private final short fps = 60;
     private double nextRepaintTime;
 
     private static Thread gameThread;
     private KeyHandler key = new KeyHandler();
 
-    private Player player ;
+    private Player player;
+    private TileManager tileManager;
+    private GenerateMap mapGenerator;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -33,8 +37,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
 
         player = new Player(this, key);
+        tileManager = new TileManager(this);
+        mapGenerator = new GenerateMap(this);
 
-        startGameThread();
+        mapGenerator.generate();
+
     }
 
     public void startGameThread() {
@@ -63,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D)g;
 
+        tileManager.draw(g2D);
         player.draw(g2D);
 
         g2D.dispose();

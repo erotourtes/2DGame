@@ -2,7 +2,9 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.SwapImg;
+import swappingImages.SwapImg;
+import swappingImages.SwappingPlayerMoving;
+import swappingImages.SwappingPlayerWaiting;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -42,8 +44,10 @@ public class Player extends Entity{
     }
 
     private void swapImg() {
-        for(var e : Direction.values())
-            new SwapImg(images.get(e), animatedImages.get(e));
+        for (var e : Direction.values()) {
+            new SwappingPlayerWaiting(220, images.get(e), animatedImages.get(e));
+            new SwappingPlayerMoving(150, images.get(e), animatedImages.get(e));
+        }
     }
 
     public void update() {
