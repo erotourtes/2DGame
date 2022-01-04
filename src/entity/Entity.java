@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Entity {
-    protected int x;
-    protected int y;
+    protected int worldX;
+    protected int worldY;
     protected int speed;
 
     protected Direction direction;
     protected State state;
 
-    protected final short playerWidth = 19;
-    protected final short playerHeight = 23;
+    protected final static short playerWidth = 19;
+    protected final static short playerHeight = 23;
 
     protected Map<Direction, BufferedImage[]> images;
     protected Map<Direction, Map<State, BufferedImage>> animatedImages;
@@ -29,5 +29,13 @@ public abstract class Entity {
                 animatedImages.put(direction, new HashMap<>());
             }
         }
+    }
+
+    public int getWorldX() {
+        return worldX;
+    }
+
+    public int getWorldY() {
+        return worldY;
     }
 }

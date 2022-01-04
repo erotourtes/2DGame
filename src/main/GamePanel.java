@@ -7,7 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable{
-    private final int originalTileSize = 16;
+    //game settings
+    private final int originalTileSize = 19;
     public static final int scale = 3;
 
     public final int tileSize = originalTileSize * scale;
@@ -15,8 +16,14 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxScreenColumn = 16;
     public final int maxScreenRow = 12;
 
-    private final int screenWidth = tileSize * maxScreenColumn;
-    private final int screenHeight = tileSize * maxScreenRow;
+    public final int screenWidth = tileSize * maxScreenColumn;
+    public final int screenHeight = tileSize * maxScreenRow;
+
+    //world settings
+    private int maxWorldCol = 50;
+    private int maxWorldRow = 50;
+    private int worldWidth = maxWorldCol * tileSize;
+    private int worldHeight = maxWorldRow * tileSize;
 
     private final short fps = 60;
     private double nextRepaintTime;
@@ -92,5 +99,35 @@ public class GamePanel extends JPanel implements Runnable{
 
     private double toMilliseconds(double time) {
         return time / Math.pow(10, 6);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getMaxWorldCol() {
+        return maxWorldCol;
+    }
+
+    public void setMaxWorldCol(int maxWorldCol) {
+        this.maxWorldCol = maxWorldCol;
+        worldWidth = maxWorldCol * tileSize;
+    }
+
+    public int getMaxWorldRow() {
+        return maxWorldRow;
+    }
+
+    public void setMaxWorldRow(int maxWorldRow) {
+        this.maxWorldRow = maxWorldRow;
+        worldHeight = maxWorldRow * tileSize;
+    }
+
+    public int getWorldWidth() {
+        return worldWidth;
+    }
+
+    public int getWorldHeight() {
+        return worldHeight;
     }
 }

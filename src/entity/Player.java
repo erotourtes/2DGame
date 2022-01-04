@@ -2,7 +2,6 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import swappingImages.SwapImg;
 import swappingImages.SwappingPlayerMoving;
 import swappingImages.SwappingPlayerWaiting;
 
@@ -15,17 +14,23 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler key;
 
+    public final int screenX, screenY;
+
     public Player(GamePanel gp, KeyHandler key) {
         this.gp = gp;
         this.key = key;
+
+        screenX = gp.screenWidth / 2 - Entity.playerWidth / 2 + 8;
+        screenY = gp.screenHeight / 2 - Entity.playerHeight / 2 - 8;
+
         setDefault();
         getImages();
         swapImg();
     }
 
     public void setDefault() {
-        x = 100;
-        y = 100;
+        worldX = gp.getMaxWorldCol() / 2 * gp.tileSize;
+        worldY = gp.getMaxWorldRow() / 2 * gp.tileSize;
         speed = 4;
         direction = Direction.DOWN;
     }
@@ -58,24 +63,24 @@ public class Player extends Entity{
 
         if (key.isUp()) {
             direction = Direction.UP;
-            y -= speed;
+            worldY -= speed;
         }
         if (key.isDown()) {
             direction = Direction.DOWN;
-            y += speed;
+            worldY += speed;
         }
         if (key.isLeft()) {
             direction = direction.LEFT;
-            x -= speed;
+            worldX -= speed;
         }
         if (key.isRight()) {
             direction = Direction.RIGHT;
-            x += speed;
+            worldX += speed;
         }
     }
 
     public void draw(Graphics2D g2D) {
         BufferedImage image = animatedImages.get(direction).get(state);
-        g2D.drawImage(image, x, y, playerWidth * GamePanel.scale, playerHeight * GamePanel.scale, null);
+        g2D.drawImage(image, screenX, screenY, playerWidth * GamePanel.scale, playerHeight * GamePanel.scale, null);
     }
 }

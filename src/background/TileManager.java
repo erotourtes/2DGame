@@ -44,15 +44,40 @@ public class TileManager {
     }
 
     public void generateNewMap() {
-        this.mapArr = PerlinNoise3D.getNoiseArray(gp.maxScreenColumn * 2, gp.maxScreenRow, Math.random());
+        this.mapArr = PerlinNoise3D.getNoiseArray(gp.getMaxWorldCol(), gp.getMaxWorldRow(), Math.random());
     }
     public void draw(Graphics2D g) {
         int tileSize = gp.tileSize;
-        for (int y = 0; y < mapArr.length; y++) {
-            for (int x = 0; x < mapArr[y].length; x++) {
-                var tileNumber =  mapArr[y][x];
-                g.drawImage(tiles[tileNumber].image, x * tileSize, y * tileSize, tileSize, tileSize, null);
+
+        for (int y = 0; y < gp.getMaxWorldRow(); y++) {
+            for (int x = 0; x < gp.getMaxWorldCol(); x++) {
+                int worldX = x * tileSize;
+                int worldY = y * tileSize;
+
+                if (isInVisibleZone(worldX, worldY)) {
+                    var tileNumber =  mapArr[y][x];
+                    g.drawImage(tiles[tileNumber].image, getRelativeX(x, tileSize), getRelativeY(y, tileSize), tileSize, tileSize, null);
+                }
             }
         }
+    }
+
+    private boolean isInVisibleZone(int worldX, int worldY) {
+        return worldX + gp.tileSize > gp.getPlayer().getWorldX() - gp.getPlayer().screenX &&
+                worldX - gp.tileSize < gp.getPlayer().getWorldX() + gp.getPlayer().screenX &&
+                worldY + gp.tileSize > gp.getPlayer().getWorldY() - gp.getPlayer().screenY &&
+                worldY - gp.tileSize < gp.getPlayer().getWorldY() + gp.getPlayer().screenY;
+    }
+
+    private int getRelativeX(int x, int tileSize) {
+        int worldX = x * tileSize; //absolute tile coordinates
+        int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().screenX;//where to draw relatively
+        return screenX;
+    }
+
+    private int getRelativeY(int y, int tileSize) {
+        int worldY = y * tileSize;
+        int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().screenY;
+        return screenY;
     }
 }
