@@ -11,8 +11,9 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public class TileManager {
-    GamePanel gp;
-    Tile[] tiles;
+    private GamePanel gp;
+    private Tile[] tiles;
+    private int[][] mapArr;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -42,11 +43,15 @@ public class TileManager {
         }
     }
 
+    public void generateNewMap() {
+        this.mapArr = PerlinNoise3D.getNoiseArray(gp.maxScreenColumn * 2, gp.maxScreenRow, Math.random());
+    }
     public void draw(Graphics2D g) {
-        int size = gp.tileSize;
-        for (int y = 0; y < gp.maxScreenRow; y++) {
-            for (int x = 0; x < gp.maxScreenColumn; x++) {
-                g.drawImage(tiles[0].image, x * size, y * size, size, size, null);
+        int tileSize = gp.tileSize;
+        for (int y = 0; y < mapArr.length; y++) {
+            for (int x = 0; x < mapArr[y].length; x++) {
+                var tileNumber =  mapArr[y][x];
+                g.drawImage(tiles[tileNumber].image, x * tileSize, y * tileSize, tileSize, tileSize, null);
             }
         }
     }

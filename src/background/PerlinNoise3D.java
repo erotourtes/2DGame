@@ -1,18 +1,19 @@
 package background;
 
+import java.lang.management.MemoryType;
+
 public final class PerlinNoise3D {
-    public static double[][] getNoiseArray(int width, int height){
-        double[][] arr = new double[height][width];
+    public static int[][] getNoiseArray(int width, int height, double seed){
+        int[][] arr = new int[height][width];
         for(int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
                 double dx = (double) x / width;
                 double dy = (double) y / height;
-                int frequency = 6;
+                int frequency = 5;
 
-                double noise = noise(dx * frequency, dy * height, frequency);
-
-                noise = (noise - 1) / 2;
-                arr[y][x] = noise;
+                double noise = noise(dx * frequency + seed, dy * frequency + seed, frequency * seed);
+                noise = (noise - 1) / 2 * 10 * 0.6;
+                arr[y][x] = Math.abs((int)noise);
             }
         }
         return arr;

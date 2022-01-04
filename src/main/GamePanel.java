@@ -1,6 +1,5 @@
 package main;
 
-import background.GenerateMap;
 import background.TileManager;
 import entity.Player;
 
@@ -27,7 +26,6 @@ public class GamePanel extends JPanel implements Runnable{
 
     private Player player;
     private TileManager tileManager;
-    private GenerateMap mapGenerator;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -38,10 +36,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         player = new Player(this, key);
         tileManager = new TileManager(this);
-        mapGenerator = new GenerateMap(this);
-
-        mapGenerator.generate();
-
+        tileManager.generateNewMap();
     }
 
     public void startGameThread() {
