@@ -28,10 +28,7 @@ public abstract class SwapImg {
         animatedImages.put(getState(), images[index]);
     }
 
-    protected void changeIndex() {
-    }
+    abstract protected void changeIndex();
 
-    protected State getState() {
-        return State.WAITING;
-    }
+    abstract protected State getState();
 }

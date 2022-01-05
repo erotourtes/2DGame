@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     private Player player;
     private TileManager tileManager;
+    public CollisionChecker collisionChecker;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable{
         player = new Player(this, key);
         tileManager = new TileManager(this);
         tileManager.generateNewMap();
+        collisionChecker = new CollisionChecker(this);
     }
 
     public void startGameThread() {
@@ -129,5 +131,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     public int getWorldHeight() {
         return worldHeight;
+    }
+
+    public TileManager getTileManager() {
+        return tileManager;
     }
 }

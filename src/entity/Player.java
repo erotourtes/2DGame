@@ -23,6 +23,13 @@ public class Player extends Entity{
         screenX = gp.screenWidth / 2 - Entity.playerWidth / 2 + 8;
         screenY = gp.screenHeight / 2 - Entity.playerHeight / 2 - 8;
 
+        solidArea = new Rectangle();
+        int recValue = 11 * gp.scale;
+        solidArea.y = playerHeight * gp.scale - recValue;
+        solidArea.x = (playerWidth * gp.scale - recValue) / 2;
+        solidArea.width = recValue;
+        solidArea.height = recValue;
+
         setDefault();
         getImages();
         swapImg();
@@ -56,10 +63,12 @@ public class Player extends Entity{
     }
 
     public void update() {
-        if (key.isMoving())
+        if (key.isMoving()) {
             state = State.MOVING;
-        else
+        }
+        else {
             state = State.WAITING;
+        }
 
         if (key.isUp()) {
             direction = Direction.UP;
@@ -77,6 +86,32 @@ public class Player extends Entity{
             direction = Direction.RIGHT;
             worldX += speed;
         }
+
+        checkCollision();
+        if (collision) {
+            reverseKeyHandler();
+        }
+
+    }
+
+    private void reverseKeyHandler() {
+        if (key.isUp()) {
+            worldY += speed;
+        }
+        if (key.isDown()) {
+            worldY -= speed;
+        }
+        if (key.isLeft()) {
+            worldX += speed;
+        }
+        if (key.isRight()) {
+            worldX -= speed;
+        }
+    }
+
+    private void checkCollision() {
+        collision = false;
+        gp.collisionChecker.checkTile(this);
     }
 
     public void draw(Graphics2D g2D) {

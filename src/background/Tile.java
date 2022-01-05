@@ -7,7 +7,11 @@ public class Tile {
     private boolean collision = false;
 
     public void setCollision(boolean variable) {
+        collision = variable;
+    }
 
+    public boolean getCollision() {
+        return collision;
     }
 
 }

@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,9 +8,11 @@ import java.util.Map;
 public abstract class Entity {
     protected int worldX;
     protected int worldY;
+
     protected int speed;
 
     protected Direction direction;
+
     protected State state;
 
     protected final static short playerWidth = 19;
@@ -17,7 +20,10 @@ public abstract class Entity {
 
     protected Map<Direction, BufferedImage[]> images;
     protected Map<Direction, Map<State, BufferedImage>> animatedImages;
+
     protected short numberOfImages = 5;
+    protected Rectangle solidArea;
+    protected boolean collision = false;
 
     public Entity() {
         images = new HashMap<>();
@@ -37,5 +43,21 @@ public abstract class Entity {
 
     public int getWorldY() {
         return worldY;
+    }
+
+    public Rectangle getSolidArea() {
+        return solidArea;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setCollision(boolean value) {
+        collision = value;
     }
 }
