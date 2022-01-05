@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
@@ -19,6 +18,7 @@ public class TileManager {
         this.gp = gp;
         tiles = new Tile[10];
         getTileImages();
+        setCollisionInObjects();
     }
 
     public void getTileImages() {
@@ -41,6 +41,10 @@ public class TileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setCollisionInObjects() {
+//        tiles[3].
     }
 
     public void generateNewMap() {

@@ -1,7 +1,5 @@
 package background;
 
-import java.lang.management.MemoryType;
-
 public final class PerlinNoise3D {
     public static int[][] getNoiseArray(int width, int height, double seed){
         int[][] arr = new int[height][width];
