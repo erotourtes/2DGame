@@ -50,28 +50,46 @@ public class TileManager {
     public void generateNewMap() {
         this.mapArr = PerlinNoise3D.getNoiseArray(gp.getMaxWorldCol(), gp.getMaxWorldRow(), Math.random());
     }
+
+    //    public void draw(Graphics2D g) {
+//        int tileSize = gp.tileSize;
+//
+//        for (int y = 0; y < gp.getMaxWorldRow(); y++) {
+//            for (int x = 0; x < gp.getMaxWorldCol(); x++) {
+//                int worldX = x * tileSize;
+//                int worldY = y * tileSize;
+//
+//                if (isInVisibleZone(worldX, worldY)) {
+//                    var tileNumber =  mapArr[y][x];
+//                    g.drawImage(tiles[tileNumber].image, getRelativeX(x, tileSize), getRelativeY(y, tileSize), tileSize, tileSize, null);
+//                }
+//            }
+//        }
+//    }
     public void draw(Graphics2D g) {
         int tileSize = gp.tileSize;
 
-        for (int y = 0; y < gp.getMaxWorldRow(); y++) {
-            for (int x = 0; x < gp.getMaxWorldCol(); x++) {
-                int worldX = x * tileSize;
-                int worldY = y * tileSize;
+        int relateXBeginning = gp.getPlayer().getWorldX() - gp.getPlayer().screenX;
+        int relateXEnd = gp.getPlayer().getWorldX() + gp.getPlayer().screenX;
 
-                if (isInVisibleZone(worldX, worldY)) {
-                    var tileNumber =  mapArr[y][x];
+        int relateYBeginning = gp.getPlayer().getWorldY() - gp.getPlayer().screenY;
+        int relateYEnd = gp.getPlayer().getWorldY() + gp.getPlayer().screenY;
+
+        for (int y = relateYBeginning / tileSize; y < relateYEnd / tileSize + 2; y++) {
+            for (int x = relateXBeginning / tileSize; x < relateXEnd / tileSize + 1; x++) {
+                if (ifHasTilesForPosition(x, y)) {
+                    var tileNumber = mapArr[y][x];
                     g.drawImage(tiles[tileNumber].image, getRelativeX(x, tileSize), getRelativeY(y, tileSize), tileSize, tileSize, null);
                 }
             }
         }
     }
 
-    private boolean isInVisibleZone(int worldX, int worldY) {
-        return worldX + gp.tileSize > gp.getPlayer().getWorldX() - gp.getPlayer().screenX &&
-                worldX - gp.tileSize < gp.getPlayer().getWorldX() + gp.getPlayer().screenX &&
-                worldY + gp.tileSize > gp.getPlayer().getWorldY() - gp.getPlayer().screenY &&
-                worldY - gp.tileSize < gp.getPlayer().getWorldY() + gp.getPlayer().screenY;
+    private boolean ifHasTilesForPosition(int x, int y) {
+        return y < mapArr.length && x < mapArr[0].length &&
+                y >= 0 && x >= 0;
     }
+
 
     private int getRelativeX(int x, int tileSize) {
         int worldX = x * tileSize; //absolute tile coordinates
