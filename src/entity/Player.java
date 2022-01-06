@@ -31,6 +31,9 @@ public class Player extends Entity{
         solidArea.width = (playerWidth - recValueX * 2) * gp.scale;
         solidArea.height = (recValueY) * gp.scale;
 
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+
         setDefault();
         getImages();
         swapImg();
@@ -71,48 +74,28 @@ public class Player extends Entity{
             state = State.WAITING;
         }
 
-        if (key.isUp()) {
-            direction = Direction.UP;
-            worldY -= speed;
-        }
-        if (key.isDown()) {
-            direction = Direction.DOWN;
-            worldY += speed;
-        }
-        if (key.isLeft()) {
-            direction = direction.LEFT;
-            worldX -= speed;
-        }
-        if (key.isRight()) {
-            direction = Direction.RIGHT;
-            worldX += speed;
-        }
+        if (key.isUp()) direction = Direction.UP;
+        if (key.isDown()) direction = Direction.DOWN;
+        if (key.isLeft()) direction = direction.LEFT;
+        if (key.isRight()) direction = Direction.RIGHT;
 
         checkCollision();
-        if (collision) {
-            reverseKeyHandler();
+
+        if (!collision) {
+            if(key.isUp()) worldY -= speed;
+            if(key.isDown()) worldY += speed;
+            if(key.isLeft()) worldX -= speed;
+            if(key.isRight()) worldX += speed;
         }
 
-    }
-
-    private void reverseKeyHandler() {
-        if (key.isUp()) {
-            worldY += speed;
-        }
-        if (key.isDown()) {
-            worldY -= speed;
-        }
-        if (key.isLeft()) {
-            worldX += speed;
-        }
-        if (key.isRight()) {
-            worldX -= speed;
-        }
     }
 
     private void checkCollision() {
         collision = false;
         gp.collisionChecker.checkTile(this);
+
+        var obj = gp.collisionChecker.checkObject(this, true);
+        System.out.println(obj);
     }
 
     public void draw(Graphics2D g2D) {

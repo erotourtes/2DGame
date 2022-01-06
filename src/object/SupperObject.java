@@ -9,11 +9,18 @@ import java.io.IOException;
 
 public class SupperObject {
     protected BufferedImage image;
+
     protected String name;
+
     protected boolean collision = false;
 
-    protected int worldX, worldY;
+    protected Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 
+    protected int solidAreaDefaultX = 0;
+
+    protected int getSolidAreaDefaultY = 0;
+
+    protected int worldX, worldY;
     protected void setImage(String name) {
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/resources/Object/" + name + ".png"));
@@ -44,5 +51,25 @@ public class SupperObject {
 
     public void setWorldY(int worldY) {
         this.worldY = worldY;
+    }
+
+    public Rectangle getSolidArea() {
+        return solidArea;
+    }
+
+    public int getSolidAreaDefaultX() {
+        return solidAreaDefaultX;
+    }
+
+    public int getGetSolidAreaDefaultY() {
+        return getSolidAreaDefaultY;
+    }
+
+    public boolean isCollision() {
+        return collision;
+    }
+
+    public String getName() {
+        return name;
     }
 }

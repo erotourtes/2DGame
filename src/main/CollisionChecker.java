@@ -34,6 +34,42 @@ public class CollisionChecker {
         }
     }
 
+    public String checkObject(Entity entity, boolean isPlayer) {
+        var objs = gp.getSuperObject();
+        String obj = "none objects touched";
+
+        for (int i = 0; i < objs.length; i++) {
+            if(objs[i] == null)
+                return obj;
+
+            entity.getSolidArea().x = entity.getWorldX() + entity.getSolidArea().x;
+            entity.getSolidArea().y = entity.getWorldY() + entity.getSolidArea().y;
+
+            objs[i].getSolidArea().x = objs[i].getWorldX() + objs[i].getSolidArea().x;
+            objs[i].getSolidArea().y = objs[i].getWorldY() + objs[i].getSolidArea().y;
+
+            switch (entity.getDirection()) {
+                case UP -> entity.getSolidArea().y -= entity.getSpeed();
+                case DOWN-> entity.getSolidArea().y += entity.getSpeed();
+                case LEFT -> entity.getSolidArea().x -= entity.getSpeed();
+                case RIGHT -> entity.getSolidArea().x += entity.getSpeed();
+            }
+
+            if (entity.getSolidArea().intersects(gp.getSuperObject()[i].getSolidArea())) {
+                entity.setCollision(objs[i].isCollision());
+                if (isPlayer) obj = objs[i].getName() + " index: " + i;
+            }
+
+            entity.getSolidArea().x = entity.getSolidAreaDefaultX();
+            entity.getSolidArea().y = entity.getSolidAreaDefaultY();
+
+            objs[i].getSolidArea().x = objs[i].getSolidAreaDefaultX();
+            objs[i].getSolidArea().y = objs[i].getGetSolidAreaDefaultY();
+
+        }
+        return obj;
+    }
+
     private void checkCollisionTop(int entityTopWorldY) {
         entityTop = (entityTopWorldY - entity.getSpeed()) / gp.tileSize;
         int tileNumFirst = gp.getTileManager().getMapArr()[entityTop][entityLeft];

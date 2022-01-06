@@ -10,9 +10,7 @@ public abstract class Entity {
     protected int worldY;
 
     protected int speed;
-
     protected Direction direction;
-
     protected State state;
 
     protected final static short playerWidth = 19;
@@ -24,6 +22,9 @@ public abstract class Entity {
     protected short numberOfImages = 5;
     protected Rectangle solidArea;
     protected boolean collision = false;
+
+    protected int solidAreaDefaultX, solidAreaDefaultY;
+
 
     public Entity() {
         images = new HashMap<>();
@@ -48,10 +49,10 @@ public abstract class Entity {
     public void setWorldX(int value) {
         worldX = value;
     }
+
     public void setWorldY(int value) {
         worldY = value;
     }
-
     public Rectangle getSolidArea() {
         return solidArea;
     }
@@ -66,5 +67,13 @@ public abstract class Entity {
 
     public void setCollision(boolean value) {
         collision = value;
+    }
+
+    public int getSolidAreaDefaultX() {
+        return solidAreaDefaultX;
+    }
+
+    public int getSolidAreaDefaultY() {
+        return solidAreaDefaultY;
     }
 }
