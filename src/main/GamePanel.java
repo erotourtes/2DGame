@@ -2,6 +2,7 @@ package main;
 
 import background.TileManager;
 import entity.Player;
+import object.SupperObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +34,11 @@ public class GamePanel extends JPanel implements Runnable{
 
     private Player player;
     private TileManager tileManager;
+
     public CollisionChecker collisionChecker;
+    public AssetSetter assetSetter;
+
+    private SupperObject[] superObject = new SupperObject[10];
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -46,6 +51,11 @@ public class GamePanel extends JPanel implements Runnable{
         tileManager = new TileManager(this);
         tileManager.generateNewMap();
         collisionChecker = new CollisionChecker(this);
+        assetSetter = new AssetSetter(this);
+    }
+
+    public void setupGame() {
+        assetSetter.setObject();
     }
 
     public void startGameThread() {
@@ -74,7 +84,15 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D)g;
 
+        //tile
         tileManager.draw(g2D);
+        //object
+        for (int i = 0; i < superObject.length; i++) {
+            if (superObject[i] != null) {
+                superObject[i].draw(g2D, this);
+            }
+        }
+        //player
         player.draw(g2D);
 
         g2D.dispose();
@@ -105,6 +123,10 @@ public class GamePanel extends JPanel implements Runnable{
 
     public Player getPlayer() {
         return player;
+    }
+
+    public SupperObject[] getSuperObject() {
+        return superObject;
     }
 
     public int getMaxWorldCol() {

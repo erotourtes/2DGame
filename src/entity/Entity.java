@@ -45,6 +45,13 @@ public abstract class Entity {
         return worldY;
     }
 
+    public void setWorldX(int value) {
+        worldX = value;
+    }
+    public void setWorldY(int value) {
+        worldY = value;
+    }
+
     public Rectangle getSolidArea() {
         return solidArea;
     }

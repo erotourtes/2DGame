@@ -7,6 +7,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class TileManager {
@@ -51,6 +52,13 @@ public class TileManager {
 
     public void generateNewMap() {
         this.mapArr = PerlinNoise3D.getNoiseArray(gp.getMaxWorldCol(), gp.getMaxWorldRow(), Math.random());
+        var random = new Random();
+        var player = gp.getPlayer();
+        while (tiles[mapArr[player.getWorldY() / gp.tileSize][player.getWorldX() / gp.tileSize]].getCollision() == true) {
+            System.out.println("here" + player.getWorldX());
+            player.setWorldX(random.nextInt(gp.getMaxWorldCol()) * gp.tileSize);
+            player.setWorldY(random.nextInt(gp.getMaxWorldRow()) * gp.tileSize);
+        }
     }
 
     public void draw(Graphics2D g) {

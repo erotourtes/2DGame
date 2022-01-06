@@ -24,11 +24,12 @@ public class Player extends Entity{
         screenY = gp.screenHeight / 2 - Entity.playerHeight / 2 - 8;
 
         solidArea = new Rectangle();
-        int recValue = 11 * gp.scale;
-        solidArea.y = playerHeight * gp.scale - recValue;
-        solidArea.x = (playerWidth * gp.scale - recValue) / 2;
-        solidArea.width = recValue;
-        solidArea.height = recValue;
+        int recValueY = 10;
+        int recValueX = 3;
+        solidArea.y = recValueY * gp.scale;
+        solidArea.x = recValueX * gp.scale;
+        solidArea.width = (playerWidth - recValueX * 2) * gp.scale;
+        solidArea.height = (recValueY) * gp.scale;
 
         setDefault();
         getImages();
